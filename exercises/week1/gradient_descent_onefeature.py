@@ -57,17 +57,22 @@ def gradientDescent(X, y, theta, alpha, num_iters):
     X = np.stack([np.ones(m), X], axis=1)
 
     J_history = []  # Use a python list to save cost in every iteration
-
+    xTrans = X.transpose()
     for i in range(num_iters):
-
-        predictions = np.dot(X, theta[:, None])
-        theta[0] = theta[0] - alpha * (1/m) * (np.sum(np.subtract(predictions, y)))
-
-        temp_theta_one = 0.0
-
-        for j in range(0, m):
-            temp_theta_one += ((predictions[j][0] - y[j]) * X[j][1])
-        theta[1] = theta[1] - (temp_theta_one * alpha * (1/m))
+        hypothesis = np.dot(X, theta)
+        loss = hypothesis - y
+        # avg cost per example, just for debugging purposes
+        cost = np.sum(loss ** 2) / (2 * m)
+        print("Iteration %d | Cost: %f" % (i, cost))
+        # avg gradient calculated as follows:
+        # Remember that x0 = 1.
+        # Summation over the loss * its corresponding features value (the partial derivation ath this point)
+        # Summation by matrix multiplication: Need to transpose X for valid multiplication and
+        # correct values.
+        # Divide by m or multi with (1/m)
+        gradient = np.dot(xTrans, loss) / m
+        # update
+        theta = theta - alpha * gradient
 
         # save the cost J in every iteration
         J_history.append(computeCost(X, y, theta))
@@ -93,6 +98,41 @@ def computeCost(X, y, theta):
 
     return J * (1/(2 * m))
 
+def plotData(x, y):
+    """
+    Plots the data points x and y into a new figure. Plots the data
+    points and gives the figure axes labels of population and profit.
+
+    Parameters
+    ----------
+    x : array_like
+        Data point values for x-axis.
+
+    y : array_like
+        Data point values for y-axis. Note x and y should have the same size.
+
+    Instructions
+    ------------
+    Plot the training data into a figure using the "figure" and "plot"
+    functions. Set the axes labels using the "xlabel" and "ylabel" functions.
+    Assume the population and revenue data have been passed in as the x
+    and y arguments of this function.
+
+    Hint
+    ----
+    You can use the 'ro' option with plot to have the markers
+    appear as red circles. Furthermore, you can make the markers larger by
+    using plot(..., 'ro', ms=10), where `ms` refers to marker size. You
+    can also set the marker edge color using the `mec` property.
+    """
+
+    fig = pyplot.figure()
+
+    pyplot.plot(x, y, 'ro', ms=10, mec='k')
+    pyplot.xlabel("Population in 10000s")
+    pyplot.ylabel("Revenue in 10000$")
+    pyplot.show()
+
 
 if __name__ == '__main__':
     data = np.loadtxt(os.path.join("/home/thelichking/Desktop/ml-coursera-python-assignments/Exercise1/Data",
@@ -111,4 +151,14 @@ if __name__ == '__main__':
     theta, J_history = gradientDescent(X, y, theta, alpha, iterations)
     print('Theta found by gradient descent: {:.4f}, {:.4f}'.format(*theta))
     print('Expected theta values (approximately): [-3.6303, 1.1664]')
+
+    X = np.stack([np.ones(97), X], axis=1)
+    print("Normal Equation optimal values: {:.4f}, {:.4f}".format(*np.linalg.inv(X.T.dot(X)).dot(X.T).dot(y)))
+
+
+    pyplot.plot(X[:, 1], y, 'ro', ms=10, mec='k')
+    pyplot.plot(X[:, 1], np.dot(X, theta), '-')
+    pyplot.legend(['Training data', 'Linear regression']);
+    pyplot.show()
+
 
