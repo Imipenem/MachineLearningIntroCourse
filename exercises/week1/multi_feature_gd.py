@@ -152,7 +152,7 @@ if __name__ == '__main__':
     X_norm, mu, sigma = featureNormalize(X)
     X = np.concatenate([np.ones((m, 1)), X_norm], axis=1)
 
-    alpha = 0.
+    alpha = 0.1
     num_iters = 100
 
     # init theta and run gradient descent
