@@ -8,6 +8,9 @@ import numpy as np
 from matplotlib import pyplot
 from mpl_toolkits.mplot3d import Axes3D  # needed to plot 3-D surfaces
 
+"""
+IMPORTANT NOTE: THIS WILL WORK FOR BOTH SINGLE AND MULTIPLE FEATURE GRADIENT DESCENT
+"""
 
 def gradientDescent(X, y, theta, alpha, num_iters):
     """
