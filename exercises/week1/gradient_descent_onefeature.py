@@ -54,6 +54,7 @@ def gradientDescent(X, y, theta, alpha, num_iters):
     # are passed by reference to functions
     theta = theta.copy()
 
+    # add the x0 feature (always 1) as a first row to our design matrix X
     X = np.stack([np.ones(m), X], axis=1)
 
     J_history = []  # Use a python list to save cost in every iteration
