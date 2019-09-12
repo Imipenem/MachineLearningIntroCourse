@@ -109,11 +109,9 @@ def plotDecisionBoundary(theta, X, y):
     if X.shape[1] <= 3:
         # Only need 2 points to define a line, so choose two endpoints
         plot_x = np.array([np.min(X[:, 1]) - 2, np.max(X[:, 1]) + 2])
-        print(plot_x)
 
         # Calculate the decision boundary line
         plot_y = (-1. / theta[2]) * (theta[1] * plot_x + theta[0])
-        print(plot_y)
 
         # Plot, and adjust axes for better viewing
         pyplot.plot(plot_x, plot_y)
