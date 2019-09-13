@@ -61,11 +61,14 @@ def costFunctionReg(theta, X, y, lambda_):
     # by number of training examples to get the average cost
     J = cost.sum() / m
 
+    # take each regularized element into account BUT theta[0]
     reg = ((theta[1:] ** 2).sum()) * (lambda_/(2*m))
     J += reg
 
+    # first, calculate the gradient as usual for logistic regression
     grad = (np.dot(np.transpose(X), (predictions - y))) / m
 
+    # regularize each element BUT NOT theta[0] the first element
     grad[1:] = grad[1:] + (lambda_ / m) * theta[1:]
 
     return J, grad
