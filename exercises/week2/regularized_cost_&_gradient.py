@@ -65,9 +65,8 @@ def costFunctionReg(theta, X, y, lambda_):
     J += reg
 
     grad = (np.dot(np.transpose(X), (predictions - y))) / m
-    test = grad[1:] * (lambda_ / m)
 
-    grad[1:] += test
+    grad[1:] = grad[1:] + (lambda_ / m) * theta[1:]
 
     return J, grad
 
